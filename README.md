@@ -12,7 +12,7 @@ The js-class also supports all well know SorterJS-functions like:
 
 <h3>Examples:</h3>
 
-<a href="#exm1" style="display:none"></a>
+<h4>1.Sorting Number-Elements in ascending and descending order</h4>
 var data = [3,0,2,1];
 
 var s = new SorterJS(data);
@@ -24,7 +24,7 @@ s.getAll(); // -> [3,2,1,0]
 
 <p>------------------------------------------------------------------------------</p>
 
-<a href="#exm2" style="display:none"></a>
+<h4>2.Sorting Object-Elements in ascending and descending order</h4>
 var data = [{id:3},{id:0},{id:2},{id:1}];
 
 var s = new SorterJS(data);
@@ -36,12 +36,12 @@ s.getAll(); // -> [{id:3},{id:2},{id:1},{id:0}]
 
 <p>------------------------------------------------------------------------------</p>
 
-<a href="#exm3" style="display:none"></a>
+<h4>3.Sorting Sub-Object-Elements in ascending and descending order</h4>
 var data = [{name:{ first: 'Max' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Albert' }}];
 
 var s = new SorterJS(data);
 s.sort('asc','name.first');
-s.getAll(); // -> [{name:{ first: 'Albert' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Max' }}];
+s.getAll(); <span style="color:#DDDDDD">// -> [{name:{ first: 'Albert' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Max' }}];</span>
 
 s.sort('desc','name.first');
 s.getAll(); // -> [{name:{ first: 'Max' }},{name:{ first: 'John' }},{name:{ first: 'Jack' }},{name:{ first: 'Albert' }}];
@@ -55,12 +55,20 @@ The class offers following methods:
 <p><b>SorterJS.prototype.indexOf</b></p>
 <blockquote>
 
-	<p>@param <i>value</i> can be everything. But when SorterJS contains Number-Elements <i>value</i> should be a Number as well.</p>
+	<p>@param <i>value</i> can be everything. But when the class contains Number-Elements, <i>value</i> should be a Number as well.</p>
 
-	<p>@param <i>keys</i> is a string that can be given over when handling with object-elements like this <a target="#exm3>example</a>. Do not forget the dot when there a sub-sub-objects.</p>
+	<p>@param <i>keys</i> is a string that can be given over when handling with object-elements like the 3.Example. Do not forget the dot when there a sub-objects.</p>
 
 	<p><b>indexOf( in value:void, in keys:String ) : Number</b></p>
+	
+	<p>Example</p>
+	var data = [{id:3},{id:0},{id:2},{id:1}];
 
+	var s = new SorterJS(data);
+	s.indexOf(0,'id'); <span style="color:#DDDDDD">// ->  1 </span>
+	s.indexOf(1,'id'); <span style="color:#DDDDDD">// ->  3 </span>
+	s.indexOf(-3,'id'); <span style="color:#DDDDDD">// ->  -1 </span>
+	
 </blockquote>
 
 <p><b>SorterJS.prototype.lastIndexOf</b></p>
