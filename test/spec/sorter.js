@@ -77,7 +77,8 @@ describe("Sorter", function () {
 		});
 		
 		it("should sort array with number-elements in descending order", function () {
-			s.addData(m_data, '', 'desc');
+			s = new SorterJS(m_data);
+			s.sort('desc');
 			result = s.getAll();
 			expect(result.length).toEqual(s_data.length);
 			s.forEach(function (element, index, array) {
@@ -226,7 +227,7 @@ describe("Sorter", function () {
 		it("should return right last index", function () {
 			s.addData(m_data3, 'id', 'asc');
 			s.push({ id: 1},true);
-			s.sort('id','asc');
+			s.sort('asc','id');
 			result = s.getAll();
 			var calLastIndex = s.lastIndexOf(1,'id');
 			var calFirstIndex = s.indexOf(1,'id');
@@ -293,7 +294,7 @@ describe("Sorter", function () {
 		
 		it("should do addition on all elements",function(){
 			s.addData(m_data3);
-			s.sort('id','asc');
+			s.sort('asc','id');
 			
 			var startIndex = 1;
 			var sumFunc = function(prevVal, nextVal, index,array){

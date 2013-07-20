@@ -91,7 +91,7 @@ function SorterJS(data) {
 	SorterJS.prototype.addData = function (data, keys, order) {
 		if (isOrderSet(order)) {
 			this._data = copyArray(data);
-			this.sort(keys, order);
+			this.sort(order,keys);
 		} else {
 			this._data = copyArray(data);
 		}
@@ -99,7 +99,7 @@ function SorterJS(data) {
 	/*
 	* sort accepts the same params except for it does not support data to be given over
 	*/
-	SorterJS.prototype.sort = function (keys, order) {
+	SorterJS.prototype.sort = function (order,keys) {
 		keys = getKeyArrayBySplitSign(keys, '.');
 		insertionSort(this._data, keys, order);
 	};
