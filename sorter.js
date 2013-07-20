@@ -1,9 +1,9 @@
 
-function Sorter() {}
+function SorterJS(data) {
+	this._data = data ? Array.prototype.slice.call(data) : [];
+}
 
 (function () {
-
-	var _data;
 
 	var sortOpts = {
 		asc : function (val, val2) {
@@ -13,9 +13,14 @@ function Sorter() {}
 			return val > val2;
 		}
 	};
-
+	
+	function copyElement(ele){
+		var copyedElem = (ele && ele.constructor === Object) ? Object.create(ele) : ele;
+		return copyedElem;
+	}
+	
 	function copyArray(array) {
-		return array ? Array.prototype.slice.call(array, array) : [];
+		return array ? Array.prototype.slice.call(array) : [];
 	}
 	/*
 	 *  @obj is an JSON object
@@ -78,79 +83,113 @@ function Sorter() {}
 	function getKeyArrayBySplitSign(keys, splitSign) {
 		return keys ? keys.split(splitSign) : [];
 	}
-
-	Sorter.prototype.sort = function (keys, order) {
-		keys = getKeyArrayBySplitSign(keys, '.');
-		insertionSort(_data, keys, order);
-	};
-
-	Sorter.prototype.addData = function (data, keys, order) {
+	/*
+	* @data is an array that can contain elements of any type
+	* @keys is a string that can be used when handling with object-elements. When there are sub-objects you can separate the properties by a dot ('pro.sub_pro').
+	* @order is a string that is used for sorting the elements in ascending order or in descenting order. The @order can be set to 'asc' or 'desc'.
+	*/
+	SorterJS.prototype.addData = function (data, keys, order) {
 		if (isOrderSet(order)) {
-			_data = copyArray(data);
+			this._data = copyArray(data);
 			this.sort(keys, order);
 		} else {
-			_data = copyArray(data);
+			this._data = copyArray(data);
 		}
 	};
-
-	Sorter.prototype.indexOf = function (val, keys) {
+	/*
+	* sort accepts the same params except for it does not support data to be given over
+	*/
+	SorterJS.prototype.sort = function (keys, order) {
 		keys = getKeyArrayBySplitSign(keys, '.');
-		for (var i = 0; i < _data.length; i++) {
-			if (getValueByKey(_data[i], keys) === val)
+		insertionSort(this._data, keys, order);
+	};
+	/*
+	* indexOf does the same as Array.prototype.indexOf. It searches for a @val in a data-structure at the left-beginning and returns the index if @val is found otherwise -1
+	* @val should be the same type as the elements themself. Nevertheless @val can also be every type but without guarantee that @val is ever found
+	* @keys is a string that can be used when handling with object-elements.	
+	*/
+	SorterJS.prototype.indexOf = function (val, keys) {
+		keys = getKeyArrayBySplitSign(keys, '.');
+		for (var i = 0; i < this._data.length; i++) {
+			if (getValueByKey(this._data[i], keys) === val)
 				return i;
 		}
+		return -1;
 	};
-
-	Sorter.prototype.lastIndexOf = function (val, keys) {
+	/*
+	* lastIndexOf does the same as Array.prototype.lastIndexOf. It searches for a @val in a data-structure at the right-beginning and returns the index if @val is found otherwise -1
+	* @val should be the same type as the elements themself. Nevertheless @val can also be every type but without guarantee that @val is ever found
+	* @keys is a string that can be used when handling with object-elements.	*/
+	SorterJS.prototype.lastIndexOf = function (val, keys) {
 		keys = getKeyArrayBySplitSign(keys, '.');
-		for (var i = _data.length - 1; i >= 0; i--) {
-			if (getValueByKey(_data[i], keys) === val)
+		for (var i = this._data.length - 1; i >= 0; i--) {
+			if (getValueByKey(this._data[i], keys) === val)
 				return i;
 		}
+		return -1;
 	};
-
-	Sorter.prototype.shift = function () {
-		return _data.shift();
+	/*
+	* shift does the same as Array.prototype.shift. It returns the first element
+	*/
+	SorterJS.prototype.shift = function () {
+		return this._data.shift();
 	};
-
-	Sorter.prototype.push = function (ele) {
-		return _data.push(ele);
+	/*
+	* push does the same as Array.prototype.push. It inserts an element @ele at the end of the data-structure 
+	*/
+	SorterJS.prototype.push = function (ele) {
+		return this._data.push(ele);
 	};
-
-	Sorter.prototype.unshift = function (ele) {
-		return _data.unshift(ele);
+	/*
+	* unshift does the same as Array.prototype.unshift. It inserts an element @ele at the beginning of the data-structure and returns the new length
+	*/
+	SorterJS.prototype.unshift = function (ele) {
+		return this._data.unshift(ele);
 	};
-
-	Sorter.prototype.pop = function () {
-		return _data.pop();
+	/*
+	* indexOf does the same as Array.prototype.pop. It returns the last element
+	*/
+	SorterJS.prototype.pop = function () {
+		return this._data.pop();
 	};
-	
-	Sorter.prototype.get = function (index,keys) {
+	/*
+	* get returns a copied element that lies on the given @index.
+	* @keys is a string that should be used when handling with object-elements.
+	*/
+	SorterJS.prototype.get = function (index, keys) {
 		keys = getKeyArrayBySplitSign(keys, '.');
-		var copyedElem = (_data[index] && _data[index].constructor === Object) ? Object.create(_data[index]) : _data[index];
-		return copyedElem;
+		return copyElement(this._data[index]);
 	};
-	
-	Sorter.prototype.getAll = function () {
-		return _data
+	/*
+	* getAll returns a copy of all elements
+	*/
+	SorterJS.prototype.getAll = function () {
+		return copyArray(this._data);
 	};
-
-	Sorter.prototype.forEach = function (func) {
+	/*
+	* forEach does the same as Array.prototype.forEach. It iterates over each element.
+	* @func is a callback-function that should look like this: function(element, index, array){}
+	*/
+	SorterJS.prototype.forEach = function (func) {
 		if (Array.prototype.forEach) {
-			_data.forEach(func);
+			this._data.forEach(func);
 		} else {
-			for (var index = 0; index < _data.length; index++) {
-				func(_data[index], index, _data);
+			for (var index = 0; index < this._data.length; index++) {
+				func(this._data[index], index, copyArray(this._data));
 			}
 		}
 	};
-
-	Sorter.prototype.every = function (func, keys) {
+	/*
+	* every does the same as Array.prototype.every. It returns true when all elements match the condition within @func.
+	* @func is a callback-function that should look like this: function(element, index, array){}
+	* @keys is a string that should be used when handling with object-elements.
+	*/
+	SorterJS.prototype.every = function (func, keys) {
 
 		keys = getKeyArrayBySplitSign(keys, '.');
 
-		for (var index = 0; index < _data.length; index++) {
-			var returnedVal = func(getValueByKey(_data[index], keys), index, _data);
+		for (var index = 0; index < this._data.length; index++) {
+			var returnedVal = func(getValueByKey(this._data[index], keys), index, copyArray(this._data));
 			if (!returnedVal) {
 				return false;
 			}
@@ -158,13 +197,17 @@ function Sorter() {}
 
 		return true;
 	};
-
-	Sorter.prototype.some = function (func, keys) {
+	/*
+	* some does the same as Array.prototype.some. It returns true when at least one element matches the condition within @func.
+	* @func is a callback-function that should look like this: function(element, index, array){}
+	* @keys is a string that should be used when handling with object-elements.
+	*/
+	SorterJS.prototype.some = function (func, keys) {
 
 		keys = getKeyArrayBySplitSign(keys, '.');
 
-		for (var index = 0; index < _data.length; index++) {
-			var returnedVal = func(getValueByKey(_data[index], keys), index, _data);
+		for (var index = 0; index < this._data.length; index++) {
+			var returnedVal = func(getValueByKey(this._data[index], keys), index, copyArray(this._data));
 			if (returnedVal) {
 				return true;
 			}
@@ -172,71 +215,86 @@ function Sorter() {}
 
 		return false;
 	};
-
-	Sorter.prototype.filter = function (func, keys) {
+	/*
+	* filter does the same as Array.prototype.filter. It returns a new array with elements that matched the condition within @func
+	* @func is a callback-function that should look like this: function(element, index, array){}
+	* @keys is a string that should be used when handling with object-elements.
+	*/
+	SorterJS.prototype.filter = function (func, keys) {
 
 		keys = getKeyArrayBySplitSign(keys, '.');
 		var newArray = [];
-		
-		for (var index = 0; index < _data.length; index++) {
-			var returnedVal = func(getValueByKey(_data[index], keys), index, _data);
+
+		for (var index = 0; index < this._data.length; index++) {
+			var returnedVal = func(getValueByKey(this._data[index], keys), index, copyArray(this._data));
 			if (returnedVal) {
-				var copyedElem = (_data[index].constructor === Object) ? Object.create(_data[index]) : _data[index];
+				var copyedElem = (this._data[index].constructor === Object) ? Object.create(this._data[index]) : this._data[index];
 				newArray.push(copyedElem);
 			}
 		}
-		
+
 		return newArray;
 	};
-	// !!! last point
-	Sorter.prototype.map = function (func, keys) {
+	/*
+	* map does the same as Array.prototype.map. It returns a new array with customized elements that can be altered within @func
+	* @func is a callback-function that should look like this: function(element, index, array){}
+	* @keys is a string that should be used when handling with object-elements.
+	*/
+	SorterJS.prototype.map = function (func, keys) {
 
 		keys = getKeyArrayBySplitSign(keys, '.');
 		var newArray = [];
 
-		for (var index = 0; index < _data.length; index++) {
-			var returnedVal = func(getValueByKey(_data[index], keys), index, _data);
-			//var alteredElem = setValueByKey(_data[index], keys, returnedVal);
+		for (var index = 0; index < this._data.length; index++) {
+			var returnedVal = func(getValueByKey(this._data[index], keys), index, copyArray(this._data));
 			newArray.push(returnedVal);
 		}
 
 		return newArray;
 	};
-
-	Sorter.prototype.reduce = function (func, keys, startValue) {
+	/*
+	* reduce does the same as Array.prototype.reduce. It returns a number or string. It starts at the left-beginning. In most cases reduce is used for adding all number-elements together and return the sum.
+	* @func is a callback-function that should look like this: function(previous_element, next_element, index, array){}
+	* @keys is a string that should be used when handling with object-elements.
+	*/
+	SorterJS.prototype.reduce = function (func, keys, startValue) {
 
 		keys = getKeyArrayBySplitSign(keys, '.');
 
 		if (startValue) {
-			_data.unshift(startValue);
+			this._data.unshift(startValue);
 		}
 
-		var prevValue = getValueByKey(_data[0], keys);
+		var prevValue = getValueByKey(this._data[0], keys);
 		var result = prevValue;
 
-		for (var index = 1; index < _data.length; index++) {
-			var nextValue = getValueByKey(_data[index], keys);
-			prevValue = func(prevValue, nextValue, index, _data);
+		for (var index = 1; index < this._data.length; index++) {
+			var nextValue = getValueByKey(this._data[index], keys);
+			prevValue = func(prevValue, nextValue, index, copyArray(this._data));
 			result = prevValue;
 		}
 
 		return result;
 	};
-
-	Sorter.prototype.reduceRight = function (func, keys, startValue) {
+	/*
+	* reduceRight does the same as Array.prototype.reduceRight. It returns a number or string. It starts at the right-beginning. In most cases reduce is used for adding all number-elements together and return the sum.
+	* @func is a callback-function that should look like this: function(previous_element, next_element, index, array){}
+	* @keys is a string that should be used when handling with object-elements.
+	*/
+	SorterJS.prototype.reduceRight = function (func, keys, startValue) {
 
 		keys = getKeyArrayBySplitSign(keys, '.');
 
 		if (startValue) {
-			_data.push(startValue);
+			this._data.push(startValue);
 		}
 
-		var prevValue = getValueByKey(_data[_data.length - 1], keys);
+		var prevValue = getValueByKey(this._data[this._data.length - 1], keys);
 		var result = prevValue;
 
-		for (var index = _data.length - 2; index >= 0; index--) {
-			var nextValue = getValueByKey(_data[index], keys);
-			prevValue = func(prevValue, nextValue, index, _data);
+		for (var index = this._data.length - 2; index >= 0; index--) {
+			var nextValue = getValueByKey(this._data[index], keys);
+			prevValue = func(prevValue, nextValue, index, copyArray(this._data));
 			result = prevValue;
 		}
 

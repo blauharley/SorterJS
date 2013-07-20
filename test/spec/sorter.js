@@ -11,7 +11,7 @@ describe("Sorter", function () {
 
 	beforeEach(function () {
 
-		s = new Sorter();
+		s = new SorterJS();
 		m_data = [3, 1, 0, 2];
 		s_data = [0, 1, 2, 3];
 		
@@ -60,6 +60,13 @@ describe("Sorter", function () {
 			expect(result).toEqual(m_data.pop());
 		});
 		
+		it("should return -1", function () {
+			s.addData(m_data3, 'id', 'asc');
+			result = '';
+			expect( s.indexOf(45) ).toEqual(-1);
+			expect( s.lastIndexOf(124) ).toEqual(-1);
+		});
+		
 		it("should sort array with number-elements in ascending order", function () {
 			s.addData(m_data, '', 'asc');
 			result = s.getAll();
@@ -85,6 +92,89 @@ describe("Sorter", function () {
 				return element >= 0;
 			});
 			expect(checkValue).toBe(true);
+		});
+		
+		it("should create new array with filtered elements",function(){
+			s.addData(m_data);
+			
+			var newArray = s.filter(function(val,index,array){
+				if(index > 0 && (val === 1 || val === 0)){
+					return true;
+				}
+			});
+			result = newArray;
+			expect(newArray.length).not.toEqual(s.getAll().length);
+			expect(newArray.length).not.toEqual(m_data.length);
+			expect(newArray[0]).not.toBe(2);
+			expect(newArray[0]).not.toBe(3);
+			expect(newArray[1]).not.toBe(2);
+			expect(newArray[1]).not.toBe(3);
+		});
+		
+		it("should create new array with customized elements",function(){
+			s.addData(m_data);
+			var newArray = s.map(function(val,index,array){
+				val = index;
+				return val;
+			});
+			result = newArray;
+			expect(newArray.length).toEqual(s.getAll().length);
+			expect(newArray[0]).toBe(0);
+			expect(newArray[1]).toBe(1);
+			expect(newArray[2]).toBe(2);
+			expect(newArray[3]).toBe(3);
+		});
+		
+		it("should start from left",function(){
+			s.addData(m_data);
+			
+			var startIndex = 1;
+			var func = function(prevVal, nextVal, index,array){
+				expect(index).toEqual(startIndex);
+				startIndex++;
+				return prevVal;
+			};
+			
+			result = s.reduce(func);
+		});
+		
+		it("should do addition on all elements",function(){
+			s.addData(m_data);
+			var sumFunc = function(prevVal, nextVal, index,array){
+				return prevVal + nextVal;
+			};
+			
+			var sum = m_data.reduce(sumFunc);
+			var sum2 = s.reduce(sumFunc);
+			
+			result = sum2;
+			expect(sum2).toEqual(sum);
+		});
+		
+		it("should do subtraction on all elements",function(){
+			s.addData(m_data);
+			var subFunc = function(prevVal, nextVal, index,array){
+				return prevVal - nextVal;
+			};
+			
+			var sub = m_data.reduce(subFunc);
+			var sub2 = s.reduce(subFunc);
+			
+			result = sub2;
+			expect(sub2).toEqual(sub);
+		});
+		
+		it("should start from right",function(){
+			s.addData(m_data);
+			
+			var startIndex = m_data.length-2;
+			var func = function(prevVal, nextVal, index,array){
+				expect(index).toEqual(startIndex);
+				startIndex--;
+				return prevVal;
+			};
+			
+			result = s.reduceRight(func);
 		});
 		
 	});
@@ -124,6 +214,13 @@ describe("Sorter", function () {
 				var calIndex = s.indexOf(element.id,'id');
 				expect( calIndex ).toEqual(index);
 			});
+		});
+		
+		it("should return -1", function () {
+			s.addData(m_data3, 'id', 'asc');
+			result = '';
+			expect( s.indexOf(45,'id') ).toEqual(-1);
+			expect( s.lastIndexOf(124,'id') ).toEqual(-1);
 		});
 		
 		it("should return right last index", function () {
@@ -194,6 +291,25 @@ describe("Sorter", function () {
 			expect(resultArray[1].id).toBe(3);
 		});
 		
+		it("should do addition on all elements",function(){
+			s.addData(m_data3);
+			s.sort('id','asc');
+			
+			var startIndex = 1;
+			var sumFunc = function(prevVal, nextVal, index,array){
+				expect(index).toEqual(startIndex);
+				startIndex++;
+				return prevVal + nextVal;
+			};
+			
+			var sum = s.reduce(sumFunc,'id');
+			expect(sum).toEqual(6);
+			
+			startIndex = 1;
+			sum = s.reduce(sumFunc, 'id', {id:7});
+			expect(sum).toEqual(13);
+			
+		});
 	});
 
 });
