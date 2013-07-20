@@ -40,10 +40,13 @@ s.getAll(); // -> [{id:3},{id:2},{id:1},{id:0}]
 var data = [{name:{ first: 'Max' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Albert' }}];
 
 var s = new SorterJS(data);
+
 s.sort('asc','name.first');
-s.getAll(); <span style="color:#DDDDDD">// -> [{name:{ first: 'Albert' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Max' }}];</span>
+
+s.getAll(); <i style="color:#DDDDDD">// -> [{name:{ first: 'Albert' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Max' }}];</i>
 
 s.sort('desc','name.first');
+
 s.getAll(); // -> [{name:{ first: 'Max' }},{name:{ first: 'John' }},{name:{ first: 'Jack' }},{name:{ first: 'Albert' }}];
 
 <h3>Function-Documentation</h3>
@@ -62,12 +65,12 @@ The class offers following methods:
 	<p><b>indexOf( in value:void, in keys:String ) : Number</b></p>
 	
 	<p>Example</p>
-	var data = [{id:3},{id:0},{id:2},{id:1}];
+	<p>var data = [{id:3},{id:0},{id:2},{id:1}];</p>
 
-	var s = new SorterJS(data);
-	s.indexOf(0,'id'); <span style="color:#DDDDDD">// ->  1 </span>
-	s.indexOf(1,'id'); <span style="color:#DDDDDD">// ->  3 </span>
-	s.indexOf(-3,'id'); <span style="color:#DDDDDD">// ->  -1 </span>
+	<p>var s = new SorterJS(data);</p>
+	<p>s.indexOf(0,'id'); // ->  1 </span></p>
+	<p>s.indexOf(1,'id'); // ->  3 </p>
+	<p>s.indexOf(-3,'id'); // ->  -1 </p>
 	
 </blockquote>
 
