@@ -13,30 +13,44 @@ The js-class also supports all well know SorterJS-functions like:
 <h3>Examples:</h3>
 
 <h4>1.Sorting Number-Elements in ascending and descending order</h4>
+<blockquote>
 var data = [3,0,2,1];
 
 var s = new SorterJS(data);
+
 s.sort('asc');
+
 s.getAll(); // -> [0,1,2,3]
 
+
 s.sort('desc');
+
 s.getAll(); // -> [3,2,1,0]
+
+</blockquote>
 
 <p>------------------------------------------------------------------------------</p>
 
 <h4>2.Sorting Object-Elements in ascending and descending order</h4>
+<blockquote>
 var data = [{id:3},{id:0},{id:2},{id:1}];
 
 var s = new SorterJS(data);
+
 s.sort('asc','id');
+
 s.getAll(); // -> [{id:0},{id:1},{id:2},{id:3}]
 
 s.sort('desc','id');
+
 s.getAll(); // -> [{id:3},{id:2},{id:1},{id:0}]
+
+</blockquote>
 
 <p>------------------------------------------------------------------------------</p>
 
 <h4>3.Sorting Sub-Object-Elements in ascending and descending order</h4>
+<blockquote>
 var data = [{name:{ first: 'Max' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Albert' }}];
 
 var s = new SorterJS(data);
@@ -48,6 +62,7 @@ s.getAll(); <i style="color:#DDDDDD">// -> [{name:{ first: 'Albert' }},{name:{ f
 s.sort('desc','name.first');
 
 s.getAll(); // -> [{name:{ first: 'Max' }},{name:{ first: 'John' }},{name:{ first: 'Jack' }},{name:{ first: 'Albert' }}];
+</blockquote>
 
 <h3>Function-Documentation</h3>
 
