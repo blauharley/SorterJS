@@ -14,18 +14,18 @@ The js-class also supports all well know SorterJS-functions like:
 
 <h4>1.Sorting Number-Elements in ascending and descending order</h4>
 <blockquote>
-var data = [3,0,2,1];
+<p>var data = [3,0,2,1];</p>
 
-var s = new SorterJS(data);
+<p>var s = new SorterJS(data);</p>
 
-s.sort('asc');
+<p>s.sort('asc');</p>
 
-s.getAll(); // -> [0,1,2,3]
+<p>s.getAll(); // -> [0,1,2,3]</p>
 
 
-s.sort('desc');
+<p>s.sort('desc');</p>
 
-s.getAll(); // -> [3,2,1,0]
+<p>s.getAll(); // -> [3,2,1,0]</p>
 
 </blockquote>
 
@@ -33,17 +33,17 @@ s.getAll(); // -> [3,2,1,0]
 
 <h4>2.Sorting Object-Elements in ascending and descending order</h4>
 <blockquote>
-var data = [{id:3},{id:0},{id:2},{id:1}];
+<p>var data = [{id:3},{id:0},{id:2},{id:1}];</p>
 
-var s = new SorterJS(data);
+<p>var s = new SorterJS(data);</p>
 
-s.sort('asc','id');
+<p>s.sort('asc','id');</p>
 
-s.getAll(); // -> [{id:0},{id:1},{id:2},{id:3}]
+<p>s.getAll(); // -> [{id:0},{id:1},{id:2},{id:3}]</p>
 
-s.sort('desc','id');
+<p>s.sort('desc','id');</p>
 
-s.getAll(); // -> [{id:3},{id:2},{id:1},{id:0}]
+<p>s.getAll(); // -> [{id:3},{id:2},{id:1},{id:0}]</p>
 
 </blockquote>
 
@@ -51,17 +51,17 @@ s.getAll(); // -> [{id:3},{id:2},{id:1},{id:0}]
 
 <h4>3.Sorting Sub-Object-Elements in ascending and descending order</h4>
 <blockquote>
-var data = [{name:{ first: 'Max' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Albert' }}];
+<p>var data = [{name:{ first: 'Max' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Albert' }}];</p>
 
-var s = new SorterJS(data);
+<p>var s = new SorterJS(data);</p>
 
-s.sort('asc','name.first');
+<p>s.sort('asc','name.first');</p>
 
-s.getAll(); <i style="color:#DDDDDD">// -> [{name:{ first: 'Albert' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Max' }}];</i>
+<p>s.getAll(); <i style="color:#DDDDDD">// -> [{name:{ first: 'Albert' }},{name:{ first: 'Jack' }},{name:{ first: 'John' }},{name:{ first: 'Max' }}];</i></p>
 
-s.sort('desc','name.first');
+<p>s.sort('desc','name.first');</p>
 
-s.getAll(); // -> [{name:{ first: 'Max' }},{name:{ first: 'John' }},{name:{ first: 'Jack' }},{name:{ first: 'Albert' }}];
+<p>s.getAll(); // -> [{name:{ first: 'Max' }},{name:{ first: 'John' }},{name:{ first: 'Jack' }},{name:{ first: 'Albert' }}];</p>
 </blockquote>
 
 <h3>Function-Documentation</h3>
