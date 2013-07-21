@@ -14,6 +14,12 @@ function SorterJS(data) {
 		}
 	};
 	
+	var KEY_SPLIT_SIGN = '.';
+	
+	function isNumber(ele){
+    	return ele !== null && !isNaN(ele);
+	}
+
 	function copyElement(ele){
 		var copyedElem = (ele && ele.constructor === Object) ? Object.create(ele) : ele;
 		return copyedElem;
@@ -100,7 +106,7 @@ function SorterJS(data) {
 	* sort accepts the same params except for it does not support data to be given over
 	*/
 	SorterJS.prototype.sort = function (order,keys) {
-		keys = getKeyArrayBySplitSign(keys, '.');
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
 		insertionSort(this._data, keys, order);
 	};
 	/*
@@ -108,9 +114,10 @@ function SorterJS(data) {
 	* @val should be the same type as the elements themself. Nevertheless @val can also be every type but without guarantee that @val is ever found
 	* @keys is a string that can be used when handling with object-elements.	
 	*/
-	SorterJS.prototype.indexOf = function (val, keys) {
-		keys = getKeyArrayBySplitSign(keys, '.');
-		for (var i = 0; i < this._data.length; i++) {
+	SorterJS.prototype.indexOf = function (val, offset, keys) {
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
+		var pos = (isNumber(offset) && offset > 0) ? offset : 0;
+		for (var i = pos; i < this._data.length; i++) {
 			if (getValueByKey(this._data[i], keys) === val)
 				return i;
 		}
@@ -120,9 +127,10 @@ function SorterJS(data) {
 	* lastIndexOf does the same as Array.prototype.lastIndexOf. It searches for a @val in a data-structure at the right-beginning and returns the index if @val is found otherwise -1
 	* @val should be the same type as the elements themself. Nevertheless @val can also be every type but without guarantee that @val is ever found
 	* @keys is a string that can be used when handling with object-elements.	*/
-	SorterJS.prototype.lastIndexOf = function (val, keys) {
-		keys = getKeyArrayBySplitSign(keys, '.');
-		for (var i = this._data.length - 1; i >= 0; i--) {
+	SorterJS.prototype.lastIndexOf = function (val, offset, keys) {
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
+		var pos = (isNumber(offset) && offset < this._data.length) ? offset : this._data.length - 1;
+		for (var i = pos; i >= 0; i--) {
 			if (getValueByKey(this._data[i], keys) === val)
 				return i;
 		}
@@ -157,7 +165,7 @@ function SorterJS(data) {
 	* @keys is a string that should be used when handling with object-elements.
 	*/
 	SorterJS.prototype.get = function (index, keys) {
-		keys = getKeyArrayBySplitSign(keys, '.');
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
 		return copyElement(this._data[index]);
 	};
 	/*
@@ -186,7 +194,7 @@ function SorterJS(data) {
 	*/
 	SorterJS.prototype.every = function (func, keys) {
 
-		keys = getKeyArrayBySplitSign(keys, '.');
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
 
 		for (var index = 0; index < this._data.length; index++) {
 			var returnedVal = func(getValueByKey(this._data[index], keys), index, copyArray(this._data));
@@ -204,7 +212,7 @@ function SorterJS(data) {
 	*/
 	SorterJS.prototype.some = function (func, keys) {
 
-		keys = getKeyArrayBySplitSign(keys, '.');
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
 
 		for (var index = 0; index < this._data.length; index++) {
 			var returnedVal = func(getValueByKey(this._data[index], keys), index, copyArray(this._data));
@@ -222,7 +230,7 @@ function SorterJS(data) {
 	*/
 	SorterJS.prototype.filter = function (func, keys) {
 
-		keys = getKeyArrayBySplitSign(keys, '.');
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
 		var newArray = [];
 
 		for (var index = 0; index < this._data.length; index++) {
@@ -242,7 +250,7 @@ function SorterJS(data) {
 	*/
 	SorterJS.prototype.map = function (func, keys) {
 
-		keys = getKeyArrayBySplitSign(keys, '.');
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
 		var newArray = [];
 
 		for (var index = 0; index < this._data.length; index++) {
@@ -259,7 +267,7 @@ function SorterJS(data) {
 	*/
 	SorterJS.prototype.reduce = function (func, keys, startValue) {
 
-		keys = getKeyArrayBySplitSign(keys, '.');
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
 
 		if (startValue) {
 			this._data.unshift(startValue);
@@ -283,7 +291,7 @@ function SorterJS(data) {
 	*/
 	SorterJS.prototype.reduceRight = function (func, keys, startValue) {
 
-		keys = getKeyArrayBySplitSign(keys, '.');
+		keys = getKeyArrayBySplitSign(keys, KEY_SPLIT_SIGN);
 
 		if (startValue) {
 			this._data.push(startValue);

@@ -61,9 +61,10 @@ describe("Sorter", function () {
 		});
 		
 		it("should return -1", function () {
-			s.addData(m_data3, 'id', 'asc');
+			s.addData(m_data,'','asc');
 			result = '';
 			expect( s.indexOf(45) ).toEqual(-1);
+			expect( s.indexOf(0,3) ).toEqual(-1);
 			expect( s.lastIndexOf(124) ).toEqual(-1);
 		});
 		
@@ -212,7 +213,10 @@ describe("Sorter", function () {
 			s.addData(m_data3, 'id', 'asc');
 			result = '';
 			s.forEach(function (element, index, array) {
-				var calIndex = s.indexOf(element.id,'id');
+				var calIndex = s.indexOf(element.id,0,'id');
+				expect( calIndex ).toEqual(index);
+				
+				calIndex = s.indexOf(element.id,index,'id');
 				expect( calIndex ).toEqual(index);
 			});
 		});
@@ -220,8 +224,19 @@ describe("Sorter", function () {
 		it("should return -1", function () {
 			s.addData(m_data3, 'id', 'asc');
 			result = '';
-			expect( s.indexOf(45,'id') ).toEqual(-1);
-			expect( s.lastIndexOf(124,'id') ).toEqual(-1);
+			expect( s.indexOf(45,0,'id') ).toEqual(-1);
+			expect( s.indexOf(1,3,'id') ).toEqual(-1);
+			expect( s.lastIndexOf(124,0,'id') ).toEqual(-1);
+		});
+		
+		it("should search after offset", function () {
+			s.addData(m_data3);
+			result = '';
+			s.push({id:2});
+			s.sort('asc','id');
+			var firstResult = s.lastIndexOf(2,0,'id');
+			expect( firstResult ).toEqual(-1);
+			expect( s.lastIndexOf(2,3,'id') ).toEqual( s.indexOf(2,0,'id')+1 );
 		});
 		
 		it("should return right last index", function () {
@@ -229,8 +244,8 @@ describe("Sorter", function () {
 			s.push({ id: 1},true);
 			s.sort('asc','id');
 			result = s.getAll();
-			var calLastIndex = s.lastIndexOf(1,'id');
-			var calFirstIndex = s.indexOf(1,'id');
+			var calLastIndex = s.lastIndexOf(1,3,'id');
+			var calFirstIndex = s.indexOf(1,0,'id');
 			expect( calLastIndex ).toEqual(calFirstIndex+1);
 		});
 		
